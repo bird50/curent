@@ -1,0 +1,165 @@
+เรียน อธิบดี[กรมชลประทาน]
+เรื่อง ขอความอนุเคราะห์ข้อมูลฝนครอบคลุมทั่วประเทศไทย
+อ้างถึง  คำสั่ง คสช. ที่ 46/2560 การจัดตั้งสำนักงานบริหารจัดการทรัพยากรน้ำแห่งชาติ 
+          ลงวันที่ 25 ตุลาคม 2560 
+
+ตามหนังสือที่อ้างถึง คสช. เรื่อง การจัดตั้งสำนักงานบริหารจัดการทรัพยากรน้ำแห่งชาติ เพื่อให้การบริหารจัดการทรัพยากรน้ำเป็นไปอย่างบูรณาการ มีประสิทธิภาพ และยั่งยืน ตามแนวทางการปฏิรูปประเทศด้านการบริหารราชการแผ่นดิน ด้านเศรษฐกิจ และด้านทรัพยากรธรรมชาติ ทั้งสอดคล้องกับยุทธศาสตร์ชาติด้านการสร้างการเติบโตบนคุณภาพชีวิตที่เป็นมิตรต่อสิ่งแวดล้อม นั้น
+สำนักงานทรัพยากรน้ำแห่งชาติ (สทนช.) จึงได้จัดทำแผนการดำเนินการวิเคราะห์ข้อมูลฝนของทุกหน่วยงานครอบคลุมทั่วทั้งประเทศไทย สำหรับใช้เป็นหลักการและแนวทางมาตรฐานในการวิเคราะห์ข้อมูลฝน ที่ต้องพิจารณาทั้งเรื่องของจำนวนของสถานีวัดน้ำฝน จุดที่ตั้งสถานีวัดน้ำฝน ความถูกต้องของข้อมูลฝน เทคนิคและวิธีการวิเคราะห์ สามารถให้หน่วยงานและสถาบันการศึกษาสามารถใช้อ้างอิงได้
+
+สทนช. จึงใคร่ขอความอนุเคราะห์ข้อมูลจาก[กรมชลประทาน] เพื่อใช้ประกอบการวิเคราะห์ข้อมูลฝน ประกอบด้วย
+
+1. ข้อมูลสถานีวัดน้ำฝนทุกสถานีครอบคลุมทั่วทั้งประเทศไทย โดยให้ระบุ ข้อมูลพื้นฐานอย่างน้อย คือ ชื่อสถานี รหัสสถานี พิกัดสถานี (latitude,longitude) ที่อยู่ (ตำบล อำเภอ จังหวัด)
+2. รายละเอียดของแต่ละสถานีวัดน้ำฝน โดยให้มีข้อมูลอย่างน้อย คือ รหัสสถานี ข้อมูลฝน (รายวันหรือน้อยกว่า) โดยให้ครอบคลุมตั้งแต่ ปีพ.ศ. 2524 หรือตั้งแต่เริ่มเก็บข้อมูลน้ำฝน ถึงปัจจุบัน
+
+ทั้งนี้ สทนช. มอบหมายให้ นางสาวนิโลบล อรัณยภาค ตำแหน่งนักอุทกวิทยาชำนาญการพิเศษ โทรศัพท์ 08-1667-4502 email:pann_san@hotmail.com และนายศิรธิษณ์  วรวัฒน์ศุภรัฐ วิศวกรชลประทานชำนาญการ โทรศัพท์ 08-1570-2485 email:siratis.w@gmail.com เป็นผุ้ประสานงาน กำหนดส่งข้อมูลภายในวันที่ 20 เมษายน 2561
+
+จึงเรียนมาเพื่อโปรดพิจารณาให้ความอนุเคราะห์ จะขอบคุณยิ่ง
+ขอแสดงความนับถือ
+(นายสมเกียรติ  ประจำวงษ์)
+เลขาธิการสำนักงานทรัพยากรน้ำแห่งชาติ
+
+
+
+164.115.42.193  Geoserver
+164.115.42.192	Webmap and proxy
+164.115.42.191	Postgres
+164.115.42.190	GIS File Server
+
+docker run -i -t -name=conda -p 8888:8888 continuumio/anaconda3 /bin/bash -c "/opt/conda/bin/conda install jupyter -y --quiet && mkdir /opt/note
+
+
+docker run -i -t -p 80:8888 --name=conda3 continuumio/anaconda3 /bin/bash -c "/opt/conda/bin/conda install jupyter -y --quiet && mkdir /opt/notebooks && /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8888 --no-browser --allow-root"
+
+
+
+docker run -i -t -p 80:80 -p 8080:8080  --name=conda4 -v /opt/notebooks:/opt/notebooks continuumio/anaconda3 /bin/bash
+
+ -c "/opt/conda/bin/conda install jupyter -y --quiet && mkdir /opt/notebooks && /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8080 --no-browser --allow-root"
+
+
+http://164.115.42.192:81/?token=71f871dae16abfeef6e9052ddd77da6f20fd30dc3593b4be
+
+คณะทำงานอำนวยการติดตามวิเคราะห์แนวโน้มสถานการณ์น้ำ
+
+docker run -i -t -p 8080:8080  --name=jupyter_nwcc -v /opt/notebooks:/opt/notebooks bird50/jupyter_nwcc:ver1a /opt/endpoint.sh
+
+docker commit -m 'เพิ่ม geopandas' jupyter_nwcc bird50/jupyter_nwcc:ver1a
+
+qml=sld  styling แต่ละLayer
+composter --> qpt ทั้งหมด
+
+
+
+164.115.42.193
+password:0nwr#2018!
+164.115.42.193  Geoserver
+164.115.42.192	Webmap and proxy
+164.115.42.191	Postgres
+164.115.42.190	GIS File Server
+-------------------------------
+inbound ใช้
+192.168.42.193  Geoserver
+192.168.42.192	Webmap and proxy
+192.168.42.191	Postgres
+192.168.42.190	GIS File Server
+หรือ
+10.111.42.193 Geoserver
+10.111.42.192	Webmap and proxy
+10.111.42.191	Postgres
+10.111.42.190	GIS File Server
+
+ใช้ root เหมือนกันหมด
+
+
+การเข้าใช้ผ่าน ssh
+user: root
+password: 0nwr#2018!
+
+
+
+
+geonode
+-----------
+docker run --name "geoserver_nwcc"  -v /opt/nwcc_geoserver:/geoserver_data/data -d -p 8080:8080 geonode/geoserver
+
+
+docker swarm init --advertise-addr 192.168.42.193
+
+docker swarm join --token SWMTKN-1-57clcyuz9m4bt9so8jico6gp74wfail7xj5vuot9uegq4o27ul-40xyvs2e5ejxxhus2dp8v01sz 192.168.42.193:2377
+
+
+geonode/geoserver
+
+
+
+
+docker service create \
+--name geoserver_nwcc \
+--mount type=bind,source=/opt/nwcc_geoserver,target=/opt/geoserver/data_dir \
+--publish 8080:8080 \
+--publish 5432:5432 \
+kartoza/geoserver
+
+
+docker service create \
+--name geoserver_nwcc \
+--mount type=bind,source=/opt/nwcc_geoserver,target=/geoserver_data/data \
+--publish 8080:8080 \
+--publish 5432:5432 \
+geonode/geoserver
+
+docker service create \
+--name geoserver_nwcc \
+--publish 8080:8080 \
+--publish 5432:5432 \
+kartoza/geoserver
+
+
+
+164.115.42.191  
+manager+worker
+
+164.115.42.192
+worker
+
+
+164.115.42.193
+worker
+
+
+
+geoserver	for 3 task 3 node  port 8080
+postgrest	for 1 task		   port 5432
+geonode		for 1 task  	   port 
+pgadmin		for	1 task		    
+nginx		for 1 task		   port 80  --proxy for pgadmin geoserver geonode 
+
+volumn host ->geoserver 164.115.42.191:opt/geoserver_dir
+volumn host ->geonode 164.115.42.192:opt/geonode_dir
+
+<org.geonode.security.GeoNodeAuthProviderConfig>
+<id>-0000000000000</id>                                       
+<name>geonodeAuthProvider</name>                              
+<className>org.geonode.security.GeoNodeAuthenticationProvider</className>   
+<baseUrl>http://172.17.0.3:80/</baseUrl>                      
+</org.geonode.security.GeoNodeAuthProviderConfig>
+
+image:danielmeneses/nginx-php5.4
+container-scripts/start2.1.sh
+
+docker run --name pbms3 -d \
+-v /opt/pbms_nginx:/etc/nginx/conf.d -v /opt/pbms_www/:/var/www/ \
+-v /opt/pbms_nginx_log/:/var/log/nginx/ \
+-p 3306:3306 -p 443:443 \
+-p 80:80 bird50:pbms_bak2
+
+
+
+
+164.115.42.191
+
+
+ปัญหาที่เกิดขึ้นเกิดจาก ระบบปฏิบัติการ linux ที่ใช้เป็น server โดย พื้นที่ที่ใช้เก็บ file รูปภาพนั้นเดิม ให้อยู่ในพื้นที่ที่มีการ limit size ไว้ที่ 150 GB ซึ่งตอนนี้เต็มแล้ว (รูปเก็บตั้งแต่ปี 2553) จึงได้แก้ไขให้อยู่ในพื้นที่ใหม่ ครับ
+
+
+

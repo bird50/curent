@@ -1,0 +1,110 @@
+version: '3'
+
+
+services:
+  geoserver_nwcc:
+    image: kartoza/geoserver
+    ports:
+      - "8080:8080"
+    volumes:
+      - geoserver_vol:/opt/geoserver/data_dir
+    #depends_on:
+     # - postgis
+    networks: 
+      - nwcc_geonode_network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+  pgadmin:
+    image: fenglc/pgadmin4
+    ports:
+      - "21:5050"
+    environment:
+      - DEFAULT_USER=nwcc.onwr@gmail.com
+      - DEFAULT_PASSWORD=L^opNohe
+    networks: 
+      - nwcc_geonode_network
+    volumes:
+      - /opt/pgadmin4:/home/pgadmin/.pgadmin
+    depends_on:
+      - postgis
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+  #nginx_nwcc:
+   # image: nginx:stable-alpine
+    #ports:
+     # - "80:80"
+    #volumes:
+     # - /opt/nginx/nginx.conf:/etc/nginx/nginx.conf
+      #- /opt/nginx/conf.d:/etc/nginx/conf.d
+    #networks: 
+     # - nwcc_geonode_network
+    #depends_on:
+     # - geonode
+     # - geoserver_nwcc
+      #- pgadmin
+    #deploy:
+     # replicas: 1
+      #placement:
+       # constraints:
+        #  - node.role == manager
+  geonode:
+    image: nwcc_repo/geonode:prototype02
+    volumes:
+      - geonode_vol:/opt/geonode
+    #depends_on:
+     # - postgis
+      #- geoserver_nwcc
+    networks: 
+      - nwcc_geonode_network
+    ports:
+      - 80:8000
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+  postgis:
+    image: kartoza/postgis
+    networks: 
+      - nwcc_geonode_network
+    environment:
+      - POSTGRES_USER=nwcc_postgis
+      - POSTGRES_PASS=L^opNohe
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+  swarm-dashboard:
+    image: charypar/swarm-dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      PORT: 8081
+    ports:
+      - 443:8081
+    networks: 
+      - nwcc_geonode_network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager  
+networks:
+  nwcc_geonode_network:
+    driver: overlay
+volumes:
+  geoserver_vol:
+    driver: nfs
+    driver_opts:
+      share: "192.168.42.192/opt/nwcc_geoserver"
+  geonode_vol:
+    driver: nfs
+    driver_opts:
+      share: "192.168.42.193/opt/nwcc_geonode"

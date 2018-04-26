@@ -1,0 +1,200 @@
+version: '2.2'
+
+networks:
+	nwcc_geonode_network:
+		driver: overlay
+volumes:
+	geoserver_vol:
+	driver_opts:
+		type: "nfs"
+		o: "addr=192.168.42.192,nolock,soft,rw"
+		device: ":/opt/nwcc_geoserver"
+	geonode_vol:
+	driver_opts:
+		type: "nfs"
+		o: "addr=192.168.42.193,nolock,soft,rw"
+		device: ":/opt/nwcc_geonode"
+services:
+	geoserver_nwcc:
+		image: kartoza/geoserver
+		ports:
+			- "8080:8080"
+		volumes:
+			- type: volume
+			source: geoserver_vol
+			target: /opt/geoserver/data_dir
+				volume:
+					nocopy: true
+		networks: 
+			- nwcc_geonode_network
+			
+	nginx_nwcc:
+		image: nginx:stable-alpine
+		ports:
+			- "80:80"
+		volumes:
+			- /opt/nginx/nginx.conf:/etc/nginx/nginx.conf
+			- /opt/nginx/conf.d:/etc/nginx/conf.d
+		networks: 
+			- nwcc_geonode_network
+		deploy:
+			replicas: 1
+			placement:
+				constraints:
+					- node.role == manager
+	geonode:
+		image: nwcc_repo/geonode:prototype02
+		volumes:
+			- type: volume
+			source: geonode_vol
+			target: /opt/geonode
+				volume:
+					nocopy: true
+		networks: 
+			- nwcc_geonode_network
+		deploy:
+			replicas: 1
+			placement:
+				constraints:
+					- node.role == manager
+	postgis:
+		image: nwcc_repo/geonode:prototype02
+		networks: 
+			- nwcc_geonode_network
+		environment:
+			- POSTGRES_USER=nwcc_postgis
+			- POSTGRES_PASS=L^opNohe
+	pgadmin:
+		image: fenglc/pgadmin4
+		ports:
+			- "443:5050"
+		environment:
+			- DEFAULT_USER=nwcc.onwr@gmail.com
+			- DEFAULT_PASSWORD=L^opNohe
+		volumes:
+			- /opt/pgadmin4:/home/pgadmin/.pgadmin
+		deploy:
+			replicas: 1
+			placement:
+				constraints:
+					- node.role == manager
+	swarmdashboard:
+		image: charypar/swarm-dashboard
+		volumes:
+			- "/var/run/docker.sock:/var/run/docker.sock"
+		environment:
+			PORT: 8081
+		deploy:
+			replicas: 1
+			placement:
+				constraints:
+					- node.role == manager
+		
+		
+		
+			
+			
+			
+
+
+postgis
+docker run --name "postgis" \
+-d -t \
+-e POSTGRES_USER=nwcc_postgis \
+-e POSTGRES_PASS=L^opNohe \
+-network geonode_network \
+kartoza/postgis
+
+pgadmin
+
+docker run --name pgadmin \
+-v /opt/pgadmin4:/home/pgadmin/.pgadmin \
+-p 443:5050 \
+--network geonode_network  \
+-e DEFAULT_USER=nwcc.onwr@gmail.com \
+-e DEFAULT_PASSWORD=L^opNohe \
+-d \
+fenglc/pgadmin4
+
+nginx
+docker run --name nginx \
+-v /opt/nginx/nginx.conf:/etc/nginx/nginx.conf \
+-v /opt/nginx/conf.d:/etc/nginx/conf.d \
+--network geonode_network  \
+-p 80:80 \
+-d \
+nginx:stable-alpine
+
+
+docker run \
+--name geoserver_nwcc \
+--mount type=bind,source=/opt/nwcc_geoserver,target=/opt/geoserver/data_dir \
+--publish 8080:8080 \
+-d \
+kartoza/geoserver
+
+geonode
+docker run --name geonode_nwcc \
+--mount type=bind,source=/opt/nwcc_geonode,target=/opt/geonode \
+--network geondoe_nwcc_geonode_network  \
+--publish 80:8000 \
+-d \
+nwcc_repo/geonode:prototype02 \
+/opt/entrypoint.sh
+
+-------------
+file server
+
+164.115.42.190
+
+docker run --name nextcloud \
+-v /opt/nextcloud_files:/var/www/html \
+--network nextcloud_network \
+-p 8080:80 \
+-e MYSQL_DATABASE=nextclouddb \
+-e MYSQL_USER=root \
+-e MYSQL_PASSWORD=L^opNohe \
+-e MYSQL_HOST=mariadb \
+-d \
+nextcloud
+
+use admin account-> nwcc_admin
+passwd->L^opNohe
+
+docker run --name  mariadb \
+-v /opt/db:/var/lib/mysql \
+--network nextcloud_network \
+-e MYSQL_ROOT_PASSWORD=L^opNohe \
+-d \
+mariadb
+
+docker run  --name postgis \
+-e POSTGRES_USER=nwcc_postgis \
+-e POSTGRES_PASS=L^opNohe \
+-e ALLOW_IP_RANGE=0.0.0.0/0 \
+-e DATADIR=/opt/postgis_dir/
+--network geo_nwcc_geonode_network \
+kartoza/postgis 
+
+
+
+
+docker service create --name geonode \
+--network testnetwork \
+--constraint "node.role == manager" \
+-p 443:8000 \
+nwcc_repo/geonode:prototype02 \
+/opt/entrypoint.sh
+
+
+
+ALLOW_IP_RANGE=0.0.0.0/0
+DATADIR=/opt/postgis_dir/
+
+
+nwcc_repo/geoserver:prototype01
+nwcc_repo/pgadmin:prototype01
+nwcc_repo/geonode:prototype03
+nwcc_repo/postgis:prototype02
+
+
